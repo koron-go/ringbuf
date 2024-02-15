@@ -6,20 +6,20 @@ func TestRing(t *testing.T) {
 	check := func(n int, in []int, exp []int) {
 		b := New[int](n)
 		for _, v := range in {
-			b.Put(v)
+			b.Enqueue(v)
 		}
 		for i, v := range exp {
-			w, ok := b.Get()
+			w, ok := b.Dequeue()
 			if !ok {
-				t.Errorf("Get() failed: i=%d n=%d in=%v", i, n, in)
+				t.Errorf("Dequeue() failed: i=%d n=%d in=%v", i, n, in)
 				return
 			}
 			if w != v {
-				t.Errorf("Get() mismatch: i=%d w=%v(!=%d) n=%d in=%v", i, w, v, n, in)
+				t.Errorf("Dequeue() mismatch: i=%d w=%v(!=%d) n=%d in=%v", i, w, v, n, in)
 				return
 			}
 		}
-		w, ok := b.Get()
+		w, ok := b.Dequeue()
 		if ok {
 			t.Errorf("more value: w=%v n=%d in=%v", w, n, in)
 		}
@@ -60,13 +60,13 @@ func TestRingExtra(t *testing.T) {
 		t.Fatalf("invalid length: want=%d got=%d", want, got)
 	}
 	for i := 1; i <= 4; i++ {
-		rb.Put(i)
+		rb.Enqueue(i)
 		if want, got := i, rb.Len(); got != want {
 			t.Fatalf("invalid length: want=%d got=%d", want, got)
 		}
 	}
 	for i := 5; i <= 8; i++ {
-		rb.Put(i)
+		rb.Enqueue(i)
 		if want, got := 5, rb.Len(); got != want {
 			t.Fatalf("invalid length: want=%d got=%d", want, got)
 		}

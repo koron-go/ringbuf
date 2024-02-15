@@ -17,8 +17,8 @@ func New[T any](capacity int) *Buffer[T] {
 	}
 }
 
-// Put puts a value.
-func (b *Buffer[T]) Put(v T) {
+// Enqueue puts a value to last of the buffer.
+func (b *Buffer[T]) Enqueue(v T) {
 	b.d[(b.r+b.n)%len(b.d)] = v
 	if b.n < len(b.d) {
 		b.n++
@@ -27,8 +27,8 @@ func (b *Buffer[T]) Put(v T) {
 	}
 }
 
-// Get retrieves a value.
-func (b *Buffer[T]) Get() (T, bool) {
+// Dequeue retrieves a value.
+func (b *Buffer[T]) Dequeue() (T, bool) {
 	var zero T
 	if b.n <= 0 {
 		return zero, false
@@ -68,7 +68,7 @@ func (b *Buffer[T]) Len() int {
 	return b.n
 }
 
-// Peek peeks checks a n'th value in ringbuf without removing the value.
+// Peek peeks a n'th value in ringbuf without removing.
 func (b *Buffer[T]) Peek(n int) T {
 	var zero T
 	if n < 0 || n >= b.n {
