@@ -5,6 +5,9 @@ import "testing"
 func TestRing(t *testing.T) {
 	check := func(n int, in []int, exp []int) {
 		b := New[int](n)
+		if cap := b.Cap(); cap != n {
+			t.Errorf("unexpectecd capacity: want=%d got=%d", n, cap)
+		}
 		for _, v := range in {
 			b.Enqueue(v)
 		}
@@ -22,6 +25,9 @@ func TestRing(t *testing.T) {
 		w, ok := b.Dequeue()
 		if ok {
 			t.Errorf("more value: w=%v n=%d in=%v", w, n, in)
+		}
+		if cap := b.Cap(); cap != n {
+			t.Errorf("unexpectecd capacity: want=%d got=%d", n, cap)
 		}
 	}
 

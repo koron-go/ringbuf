@@ -28,9 +28,18 @@ func BenchmarkEnqueue(b *testing.B) {
 
 func BenchmarkDequeue(b *testing.B) {
 	rb := New[int](2 * 1024 * 1024)
-	rb.n = b.N
+	rb.n = len(rb.a)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, _ = rb.Dequeue()
+	}
+}
+
+func BenchmarkPeek(b *testing.B) {
+	rb := New[int](2 * 1024 * 1024)
+	rb.n = len(rb.a)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = rb.Peek(i)
 	}
 }
